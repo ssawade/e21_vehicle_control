@@ -1,0 +1,4 @@
+profile_generator.o: \
+ D:/git/e21_vehicle_control/Modules/profile_generator.c \
+ D:/git/e21_vehicle_control/Modules/profile_generator.h
+D:/git/e21_vehicle_control/Modules/profile_generator.h:

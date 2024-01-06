@@ -1,0 +1,10 @@
+config load "C:\temp\STM32_CubeMX_ECU_H743\STM32_CubeMX_ECU_H743.ioc"
+project toolchain STM32CubeIDE
+
+SetStructure Advanced
+
+project setCustomFWPath "C:\Users\Sascha\STM32Cube\Repository\STM32Cube_FW_H7_V1.9.1"
+
+project generate 
+
+exit wait

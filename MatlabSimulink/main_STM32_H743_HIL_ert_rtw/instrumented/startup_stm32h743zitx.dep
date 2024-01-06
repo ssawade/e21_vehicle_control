@@ -1,0 +1,2 @@
+startup_stm32h743zitx.o: \
+ D:/git/e21_vehicle_control/MatlabSimulink/STM32_CubeMX_ECU_H743/STM32CubeIDE/Application/User/Startup/instrumented/startup_stm32h743zitx.s

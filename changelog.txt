@@ -1,0 +1,24 @@
+To Do
+- Replace matlab functions with C functions
+- vary velocity profile parameters dependent on the current gear
+- Document sample times
+- Review sample times
+- Optimise rate transitions
+- Refactor parameter filt
+- Add Simulink parameters to parameter file
+- Concept fail-safe functions (e.g. analysis of both throttle sensors)
+    - Activation signal H-bridge (toggle PC6 via software -> currently hard coded)
+- Add Simulink notes to this file
+- debounce clutch and brake pedal
+- Include optimizations for calculation of current gear (e.g. plausibility check, debouncing)
+- Document logging signals
+- Limit maximum adjustable velocity
+- Round to decadic reference velocities and implement parameterisable offset
+- Evaluate adaption to current longitudinal acceleration of velocity profile generator --> added (6.1.24) --> Fix static offset after setting current velocity as targeted velocity coming from manual mode
+- Evaluate Kalman filter
+- Add gyroscope/accelerometer
+- Implement limiter functionality
+- Implement idle controller
+- Add lower velocity limiter depending on current gear like upper limiter
+- Optimise engine speed limiter if more than one gear change is necessary to reach reference velocity
+- Implement low pass in observer for engine/throttle valve delay -> or synchronize function call of profile_gen, observer and controller!
