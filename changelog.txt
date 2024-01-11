@@ -1,3 +1,14 @@
+9.1.
+- observer ported into fcn call block
+- observer switches physical model depending on clutch status
+- observer only resets if velocity is less or equal to negative measured velocity (no longer resets while clutch pedal is pressed)
+- new parameter iG_car_temp to totally disconnect drive train in "vehicle_dynamics"
+- removed vst_factor
+- controller ported into fcn call block
+- unnecessary functions in model commented out
+- aligned sample time of profile generator with observer and controller
+- observer calculates dynamical longitudinal limits in preparation to prevent limitation of command signal trough dynamic adaption of profile generator
+
 To Do
 - Replace matlab functions with C functions
 - vary velocity profile parameters dependent on the current gear

@@ -92,6 +92,7 @@ eta = 0.95;             % Antriebsstrangwirkungsgrad (Skript Dorsch)
 
 iG_car = [0.01 3.682 2.002 1.330 1.000 0.805];                % Übersetzungen Schonganggetriebe (vorwärts)
 iG_car = [0.001 3.682 2.002 1.330 1.000 0.805];                % Übersetzungen Schonganggetriebe (vorwärts)
+iG_car_temp = [0.0 3.682 2.002 1.330 1.000 0.805];                % Übersetzungen Schonganggetriebe (vorwärts)
 iD_car = 3.45;                                           % Übersetzung Differentialgetriebe 323i
 
 iG_car_up = single([1.2*iG_car(2), 1.2*iG_car(3), 1.1*iG_car(4), 1.1*iG_car(5), 1.1*iG_car(6)]);
@@ -260,6 +261,6 @@ fs_butter = 100;
 [b_num_stg, a_den_stg] = butter(1,fc_butter/(fs_butter/2));
 
 %% Velocity Profile
-vel_profile.Ts = single(0.01);
+vel_profile.Ts = single(0.005);
 vel_profile.a_max = single(1.0);
 vel_profile.j_max = single(1.0);
