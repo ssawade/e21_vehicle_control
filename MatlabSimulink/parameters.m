@@ -98,8 +98,8 @@ iD_car = 3.45;                                           % Übersetzung Differen
 iG_car_up = single([1.2*iG_car(2), 1.2*iG_car(3), 1.1*iG_car(4), 1.1*iG_car(5), 1.1*iG_car(6)]);
 iG_car_low = single([0.8*iG_car(2), 0.8*iG_car(3), 0.9*iG_car(4), 0.9*iG_car(5), 0.9*iG_car(6)]);
 
-figure
-plot(iG_car(2:6), [1 2 3 4 5], iG_car_up, [1 2 3 4 5], iG_car_low, [1 2 3 4 5])
+% figure
+% plot(iG_car(2:6), [1 2 3 4 5], iG_car_up, [1 2 3 4 5], iG_car_low, [1 2 3 4 5])
 % plot([1 2 3 4 5], iG_car(2:6), [1 2 3 4 5], iG_car_up, [1 2 3 4 5], iG_car_low)
 
 r_stat = (205*0.55*2+15*25.4)/(2*1000);
