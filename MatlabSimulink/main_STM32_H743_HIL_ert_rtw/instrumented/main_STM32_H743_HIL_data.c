@@ -9,7 +9,7 @@
  *
  * Model version                  : 2.9
  * Simulink Coder version         : 23.2 (R2023b) 01-Aug-2023
- * C/C++ source code generated on : Sat Jan  6 21:34:02 2024
+ * C/C++ source code generated on : Mon Jan 15 20:57:32 2024
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -21,7 +21,7 @@
 
 /* Model block global parameters (default storage) */
 struct_2DXLRriZ9wBR741CrBzWmE rtP_vel_profile = {
-  0.01F,
+  0.005F,
   1.0F,
   1.0F
 } ;                                    /* Variable: vel_profile
@@ -119,36 +119,8 @@ real32_T rtP_MFv = 0.4976F;            /* Variable: MFv
 real32_T rtP_UB = 15.0F;               /* Variable: UB
                                         * Referenced by: '<Root>/Model'
                                         */
-real32_T rtP_a_den_stg[2] = { 1.0F, -0.939062476F } ;/* Variable: a_den_stg
-                                                      * Referenced by: '<Root>/Model'
-                                                      */
-
-real32_T rtP_a_den_vFzg[3] = { 1.0F, -1.95557821F, 0.956543684F } ;/* Variable: a_den_vFzg
-                                                                    * Referenced by: '<Root>/Discrete Transfer Fcn3'
-                                                                    */
-
-real32_T rtP_b_num_stg[2] = { 0.030468747F, 0.030468747F } ;/* Variable: b_num_stg
-                                                             * Referenced by: '<Root>/Model'
-                                                             */
-
-real32_T rtP_b_num_vFzg[3] = { 0.000241359056F, 0.000482718111F, 0.000241359056F
-} ;                                    /* Variable: b_num_vFzg
-                                        * Referenced by: '<Root>/Discrete Transfer Fcn3'
-                                        */
-
 real32_T rtP_cphi = 0.404635847F;      /* Variable: cphi
                                         * Referenced by: '<Root>/Model'
-                                        */
-real32_T rtP_ks_vel = 0.984252F;       /* Variable: ks_vel
-                                        * Referenced by: '<Root>/Gain9'
-                                        */
-real32_T rtP_ped_high_deg = 184.57F;   /* Variable: ped_high_deg
-                                        * Referenced by: '<S8>/Saturation'
-                                        */
-real32_T rtP_ped_low_deg = 195.92F;    /* Variable: ped_low_deg
-                                        * Referenced by:
-                                        *   '<S8>/Constant7'
-                                        *   '<S8>/Saturation'
                                         */
 real32_T rtP_phimax = 1.57079637F;     /* Variable: phimax
                                         * Referenced by: '<Root>/Model'
@@ -182,36 +154,6 @@ P_main_STM32_H743_HIL_T main_STM32_H743_HIL_P = {
    */
   1.0,
 
-  /* Computed Parameter: Gain_Gain
-   * Referenced by: '<S8>/Gain'
-   */
-  0.0219726562F,
-
-  /* Computed Parameter: Gain2_Gain
-   * Referenced by: '<S8>/Gain2'
-   */
-  -0.0881057233F,
-
-  /* Computed Parameter: MAF_1_order_InitialStates
-   * Referenced by: '<S9>/MAF_1_order'
-   */
-  0.0F,
-
-  /* Computed Parameter: MAF_1_order_Coefficients
-   * Referenced by: '<S9>/MAF_1_order'
-   */
-  { 0.5F, 0.5F },
-
-  /* Computed Parameter: MAF_3_order_InitialStates
-   * Referenced by: '<S9>/MAF_3_order'
-   */
-  0.0F,
-
-  /* Computed Parameter: MAF_3_order_Coefficients
-   * Referenced by: '<S9>/MAF_3_order'
-   */
-  { 0.25F, 0.25F, 0.25F, 0.25F },
-
   /* Computed Parameter: MAF_4_order_InitialStates
    * Referenced by: '<S13>/MAF_4_order'
    */
@@ -226,11 +168,6 @@ P_main_STM32_H743_HIL_T main_STM32_H743_HIL_P = {
    * Referenced by: '<S13>/Gain7'
    */
   0.0001F,
-
-  /* Computed Parameter: Gain_Gain_f
-   * Referenced by: '<S13>/Gain'
-   */
-  60.0F,
 
   /* Computed Parameter: DiscreteTimeIntegrator_gainval
    * Referenced by: '<S12>/Discrete-Time Integrator'
@@ -257,21 +194,6 @@ P_main_STM32_H743_HIL_T main_STM32_H743_HIL_P = {
    */
   0.0F,
 
-  /* Computed Parameter: v_ist_kmh_InitialCondition
-   * Referenced by:
-   */
-  0.0F,
-
-  /* Computed Parameter: TmpRTBAtModelInport5_InitialCon
-   * Referenced by:
-   */
-  0.0F,
-
-  /* Computed Parameter: vst_factor_Value
-   * Referenced by: '<Root>/vst_factor'
-   */
-  1.0F,
-
   /* Computed Parameter: Gain1_Gain
    * Referenced by: '<Root>/Gain1'
    */
@@ -287,12 +209,17 @@ P_main_STM32_H743_HIL_T main_STM32_H743_HIL_P = {
    */
   0.0F,
 
+  /* Computed Parameter: TmpRTBAtMemory2Inport1_InitialC
+   * Referenced by:
+   */
+  0.0F,
+
   /* Computed Parameter: TmpRTBAtMemoryInport1_InitialCo
    * Referenced by:
    */
   0.0F,
 
-  /* Computed Parameter: xpp_InitialCondition
+  /* Computed Parameter: a_ist_mps2_InitialCondition
    * Referenced by:
    */
   0.0F,
@@ -307,30 +234,10 @@ P_main_STM32_H743_HIL_T main_STM32_H743_HIL_P = {
    */
   0.0F,
 
-  /* Computed Parameter: count_diff_filt2_InitialConditi
-   * Referenced by:
-   */
-  0.0F,
-
-  /* Computed Parameter: DiscreteTransferFcn3_InitialSta
-   * Referenced by: '<Root>/Discrete Transfer Fcn3'
-   */
-  0.0F,
-
   /* Computed Parameter: UnitDelay_InitialCondition
    * Referenced by: '<S9>/Unit Delay'
    */
   0U,
-
-  /* Expression: 0x4000
-   * Referenced by: '<S8>/Constant2'
-   */
-  16384U,
-
-  /* Expression: 0x3ff5
-   * Referenced by: '<S8>/Constant3'
-   */
-  16373U,
 
   /* Expression: 0x4000
    * Referenced by: '<S8>/Constant'
@@ -341,6 +248,16 @@ P_main_STM32_H743_HIL_T main_STM32_H743_HIL_P = {
    * Referenced by: '<S8>/Constant1'
    */
   16382U,
+
+  /* Expression: 0x4000
+   * Referenced by: '<S8>/Constant2'
+   */
+  16384U,
+
+  /* Expression: 0x3ff5
+   * Referenced by: '<S8>/Constant3'
+   */
+  16373U,
 
   /* Computed Parameter: UnitDelay_InitialCondition_f
    * Referenced by: '<S13>/Unit Delay'
@@ -358,17 +275,17 @@ P_main_STM32_H743_HIL_T main_STM32_H743_HIL_P = {
   { false, true, false, false, true, true, false, false, true, false, true, true,
     false, false, false, false },
 
-  /* Computed Parameter: TmpRTBAtModelInport7_InitialCon
-   * Referenced by:
-   */
-  0U,
-
   /* Computed Parameter: Memory1_InitialCondition
    * Referenced by: '<Root>/Memory1'
    */
   0U,
 
   /* Computed Parameter: TmpRTBAtMemory1Inport1_InitialC
+   * Referenced by:
+   */
+  0U,
+
+  /* Computed Parameter: TmpRTBAtModelInport7_InitialCon
    * Referenced by:
    */
   0U

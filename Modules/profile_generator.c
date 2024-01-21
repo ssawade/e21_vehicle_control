@@ -4,16 +4,16 @@ void profile_generator(
     float traj[VEC_SIZE],
     float debug[VEC_SIZE],
     const float vec_in[VEC_SIZE],
-    const bool override,
+    const char override,
     const params_t *params
 ) {
     static float t = 0.0f;
     static float vec_old[VEC_SIZE] = {0.0f, 0.0f, 0.0f};
-    static bool override_old = false;
+    static char override_old = 0;
 
     float vec_out[VEC_SIZE];
 
-    if (override) {
+    if (override == 2) {
         if (vec_in[0] != vec_old[0] || override > override_old) {
             memmove(vec_out, vec_in, sizeof(vec_in[0]) * VEC_SIZE);
             memmove(vec_old, vec_in, sizeof(vec_in[0]) * VEC_SIZE);

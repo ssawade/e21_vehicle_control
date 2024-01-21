@@ -1,4 +1,31 @@
-9.1.
+21.01.24
+- added rev_limiter_low
+- added condition to only activate vel_ctrl when engine speed is above n_Mot_min_1pmin threshold
+- resume function can only be triggered if v_ref != 0.0
+- added transition to exit vel_ctrl if engine speed is below n_Mot_min_1pmin (incl. tolerance)
+- added new value "override=2" in state machine to determine idle state and trigger idle controller contained in signal selector
+    - values override: 0=manual, 1=idle, 2=vel_ctrl
+    - adapted traj_gen to new values
+- removed gear "-1" in observer and controller
+
+
+20.01.24
+- included reset condition inside observer
+- moved ECU_RCP functions to function-called subsystems
+
+19.01.24
+- fixed driver override detection
+- sending v_ref instead of v_soll to HMI
+- removed v_soll_kmph = v_ist_kmph in "manual_operation" state
+- optimised rev_limiter: now handles gear changes
+- added state_machine_params struct in parameter script
+
+18.01.24
+- controller: added calculation of stationary control input to fix driver override detection in state machine and removed old "phi3_velctrl_norm" signal
+- state machine: removed internal gear calculation and using external signal
+- added gear_calc_params struct in parameter script
+
+09.01.24
 - observer ported into fcn call block
 - observer switches physical model depending on clutch status
 - observer only resets if velocity is less or equal to negative measured velocity (no longer resets while clutch pedal is pressed)
@@ -9,7 +36,7 @@
 - aligned sample time of profile generator with observer and controller
 - observer calculates dynamical longitudinal limits in preparation to prevent limitation of command signal trough dynamic adaption of profile generator
 
-To Do
+Tasks
 - Replace matlab functions with C functions
 - vary velocity profile parameters dependent on the current gear
 - Document sample times
@@ -23,13 +50,19 @@ To Do
 - debounce clutch and brake pedal
 - Include optimizations for calculation of current gear (e.g. plausibility check, debouncing)
 - Document logging signals
-- Limit maximum adjustable velocity
-- Round to decadic reference velocities and implement parameterisable offset
+- (done 19.1.; also limited lower v_ref) Limit maximum adjustable velocity
+- (done 21.1.) Round to decadic reference velocities !(and implement parameterisable offset)
 - Evaluate adaption to current longitudinal acceleration of velocity profile generator --> added (6.1.24) --> Fix static offset after setting current velocity as targeted velocity coming from manual mode
 - Evaluate Kalman filter
 - Add gyroscope/accelerometer
-- Implement limiter functionality
-- Implement idle controller
-- Add lower velocity limiter depending on current gear like upper limiter
-- Optimise engine speed limiter if more than one gear change is necessary to reach reference velocity
+- Implement limiter functionality incl. HMI
+- (done 21.1.) Implement idle controller
+- (done 21.1.) Add lower velocity limiter depending on current gear like upper limiter
+- (done 19.1.) Optimise engine speed limiter if more than one gear change is necessary to reach reference velocity
 - Implement low pass in observer for engine/throttle valve delay -> or synchronize function call of profile_gen, observer and controller!
+- replace approximated vehicle parameters by real measured ones
+- (done 19.1.) change of targeted velocity while in driver override state isn't possible
+- Implement throttle valve calibration at system startup
+- initialise state machine variables in reset state
+- resuming into velocity_control_active while clutch pedal is pressed or driver overrides results in override=true for one timestep
+- make mounting of throttle pedal sensor more robust and easier to install

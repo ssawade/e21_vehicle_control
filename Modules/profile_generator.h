@@ -1,7 +1,7 @@
 #ifndef PROFILE_GEN
 #define PROFILE_GEN
 
-#include <stdbool.h>
+//#include <stdbool.h>
 #include <math.h>
 #include <string.h>
 
@@ -17,7 +17,7 @@ void profile_generator(
     float traj[VEC_SIZE],
     float debug[VEC_SIZE],
     const float vec_in[VEC_SIZE],
-    const bool override,
+    const char override,
     const params_t *params
 );
 
@@ -25,7 +25,7 @@ void profile_generator_refac(
     float traj[VEC_SIZE],
     float debug[VEC_SIZE],
     const float vec_in[VEC_SIZE],
-    const bool override,
+    const char override,
     const params_t *params
 );
 

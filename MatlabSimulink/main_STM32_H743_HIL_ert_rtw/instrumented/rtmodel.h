@@ -9,7 +9,7 @@
  *
  * Model version                  : 2.9
  * Simulink Coder version         : 23.2 (R2023b) 01-Aug-2023
- * C/C++ source code generated on : Sat Jan  6 21:34:02 2024
+ * C/C++ source code generated on : Mon Jan 15 20:57:32 2024
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -20,6 +20,11 @@
 #ifndef RTW_HEADER_rtmodel_h_
 #define RTW_HEADER_rtmodel_h_
 #include "main_STM32_H743_HIL.h"
+
+/* Macros generated for backwards compatibility  */
+#ifndef rtmGetStopRequested
+#define rtmGetStopRequested(rtm)       ((void*) 0)
+#endif
 #endif                                 /* RTW_HEADER_rtmodel_h_ */
 
 /*

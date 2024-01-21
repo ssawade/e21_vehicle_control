@@ -12,15 +12,12 @@
 #define taskTimeEnd_main_STM32_H743_HIL_offset 0
 
 /* Code instrumentation offset(s) for model ECU_RCP */
-#define profileStart_ECU_RCP_offset    11
-#define profileEnd_ECU_RCP_offset      11
+#define profileStart_ECU_RCP_offset    8
+#define profileEnd_ECU_RCP_offset      8
 
 /* Code instrumentation offset(s) for model main_STM32_H743_HIL */
-#define profileStart_m_0d34002402f40824_offset 27
-#define profileEnd_main_STM32_H743_HIL_offset 27
-
-/* Code instrumentation offset(s) for model main_STM32_H743_HIL */
-#define captureMode_main_STM32_H743_HIL_offset 8
+#define profileStart_m_0d34002402f40824_offset 24
+#define profileEnd_main_STM32_H743_HIL_offset 24
 
 /* A function parameter may be intentionally unused */
 #ifndef UNUSED_PARAMETER
@@ -31,85 +28,62 @@
 # endif
 #endif
 
-static inline void taskTimeStart(uint32_T sectionId)
+void xilUploadProfilingData(uint32_T sectionId)
 {
-  captureModeStart(sectionId);
+  code_profiling_atomic_read_store(sectionId);
 }
 
-static inline void taskTimeEnd(uint32_T sectionId)
+/* For real-time, multitasking case this function is stubbed out. */
+void xilProfilingTimerFreezeInternal(void)
 {
-  captureModeEnd(sectionId);
 }
 
-#include "ext_mode_profiling.h"
-#define MAX_EXECUTION_SECTION_ID       41
-#define MAP_CAPTURE_IDS(X)             (((X) > 0 && (X) <= 8) ? (X) : (((X) > 11 && (X) <= 44) ? ((X) - 3) : 0))
-
-static uint32_T xsd_xil_last_start_time[MAX_EXECUTION_SECTION_ID] = { 0 };
-
-static uint32_T xsd_xil_capture_mode_nested[MAX_EXECUTION_SECTION_ID] = { 0 };
-
-void captureMode(uint32_T sectionId)
+void xilProfilingTimerFreeze(void)
 {
-  UNUSED_PARAMETER(sectionId);
 }
 
-void captureModeStart(uint32_T sectionId)
+/* For real-time, multitasking case this function is stubbed out. */
+void xilProfilingTimerUnFreezeInternal(void)
 {
-  uint32_T mappedId = MAP_CAPTURE_IDS(sectionId);
-  if (mappedId > 0) {
-    xsd_xil_last_start_time[mappedId - 1] = profileTimerRead();
-    xsd_xil_capture_mode_nested[mappedId - 1] = 1;
-  }                                    /* if */
 }
 
-void captureModeEnd(uint32_T sectionId)
+void xilProfilingTimerUnFreeze(void)
 {
-  uint8_T* addr;
-  uint32_T captureValue;
-  uint32_T mappedId = MAP_CAPTURE_IDS(sectionId);
-  uint32_T turnaroundTime;
-  if (mappedId > 0) {
-    mappedId = mappedId - 1;
-    if (xsd_xil_capture_mode_nested[mappedId] != 1) {
-      xsd_xil_capture_mode_nested[mappedId] = 0;
-      return;
-    }                                  /* if */
-
-    xsd_xil_capture_mode_nested[mappedId] = 0;
-
-    /* Update maximum execution */
-    addr = (uint8_T*)getMaxElementInProfilingBuffer(mappedId);
-    XCP_MEMCPY((void*)&captureValue, (void*)addr, sizeof(uint32_T));
-    turnaroundTime = profileTimerRead() - xsd_xil_last_start_time[mappedId];
-    if (turnaroundTime > captureValue) {
-      XCP_MEMCPY((void*)addr, (void*)&turnaroundTime, sizeof(uint32_T));
-    }                                  /* if */
-
-    /* Try to update to total execution counter */
-    addr = (uint8_T*)getAvgElementInProfilingBuffer(mappedId);
-    XCP_MEMCPY((void*)&captureValue, (void*)addr, sizeof(uint32_T));
-    if ((captureValue + turnaroundTime) >= captureValue) {
-      captureValue = captureValue + turnaroundTime;
-      XCP_MEMCPY((void*)addr, (void*)&captureValue, sizeof(uint32_T));
-
-      /* Update total number of calls */
-      addr = (uint8_T*)getCallsElementInProfilingBuffer(mappedId);
-      XCP_MEMCPY((void*)&captureValue, (void*)addr, sizeof(uint32_T));
-      captureValue = captureValue + 1;
-      XCP_MEMCPY((void*)addr, (void*)&captureValue, sizeof(uint32_T));
-    }                                  /* if */
-  }                                    /* if */
 }
 
-static inline void profileStart(uint32_T sectionId)
+void taskTimeStart(uint32_T sectionId)
 {
-  captureModeStart(sectionId);
+  /* Send execution profiling data to host */
+  xilUploadProfilingData(sectionId);
+  xilProfilingTimerUnFreezeInternal();
 }
 
-static inline void profileEnd(uint32_T sectionId)
+void taskTimeEnd(uint32_T sectionId)
 {
-  captureModeEnd(sectionId);
+  uint32_T sectionIdNeg = ~sectionId;
+  xilProfilingTimerFreezeInternal();
+
+  /* Send execution profiling data to host */
+  xilUploadProfilingData(sectionIdNeg);
+}
+
+void profileStart(uint32_T sectionId)
+{
+  xilProfilingTimerFreezeInternal();
+
+  /* Send execution profiling data to host */
+  xilUploadProfilingData(sectionId);
+  xilProfilingTimerUnFreezeInternal();
+}
+
+void profileEnd(uint32_T sectionId)
+{
+  uint32_T sectionIdNeg = ~sectionId;
+  xilProfilingTimerFreezeInternal();
+
+  /* Send execution profiling data to host */
+  xilUploadProfilingData(sectionIdNeg);
+  xilProfilingTimerUnFreezeInternal();
 }
 
 /* Code instrumentation method(s) for model main_STM32_H743_HIL */
@@ -143,30 +117,4 @@ void profileStart_m_0d34002402f40824(uint32_T sectionId)
 void profileEnd_main_STM32_H743_HIL(uint32_T sectionId)
 {
   profileEnd(profileEnd_main_STM32_H743_HIL_offset + sectionId);
-}
-
-/* Code instrumentation method(s) for model main_STM32_H743_HIL */
-void captureMode_main_STM32_H743_HIL(uint32_T sectionId)
-{
-  captureMode(captureMode_main_STM32_H743_HIL_offset + sectionId);
-}
-
-void InitEvent (void)
-{
-  /* callbacks executed when the sim starts */
-}
-
-void PauseEvent (void)
-{
-  /* callbacks executed when the sim is paused */
-}
-
-void TerminateEvent (void)
-{
-  /* callbacks executed when the sim ends */
-}
-
-void StepCompletedEvent (void)
-{
-  /* callbacks executed when a step ends */
 }

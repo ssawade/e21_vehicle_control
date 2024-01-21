@@ -105,8 +105,10 @@ iG_car_low = single([0.8*iG_car(2), 0.8*iG_car(3), 0.9*iG_car(4), 0.9*iG_car(5),
 r_stat = (205*0.55*2+15*25.4)/(2*1000);
 r_dyn  = r_stat;
 
-n_Mot_max_1pmin = 4000;       
-v_lim_calc_kmh = n_Mot_max_1pmin/60*1./iG_car(2:6)*1/iD_car*2*pi*r_dyn*3.6;    % Schlupf vernachlässigt
+n_Mot_max_1pmin = 4000;
+n_Mot_min_1pmin = 1500;
+v_lim_calc_up_kmh = n_Mot_max_1pmin/60*1./iG_car(2:6)*1/iD_car*2*pi*r_dyn*3.6;    % Schlupf vernachlässigt
+v_lim_calc_low_kmh = n_Mot_min_1pmin/60*1./iG_car(2:6)*1/iD_car*2*pi*r_dyn*3.6;    % Schlupf vernachlässigt
 
 a_max = 1;
 
@@ -260,7 +262,37 @@ fc_butter = 1;
 fs_butter = 100;
 [b_num_stg, a_den_stg] = butter(1,fc_butter/(fs_butter/2));
 
+% Filter acceleration limits
+fc_butter = 1;
+fs_butter = 200;
+[b_num_a_lim, a_den_a_lim] = butter(1,fc_butter/(fs_butter/2));
+
 %% Velocity Profile
 vel_profile.Ts = single(0.005);
 vel_profile.a_max = single(1.0);
 vel_profile.j_max = single(1.0);
+
+%% Gear Calculation Parameters
+gear_calc_params.iG_car_up = single(iG_car_up);
+gear_calc_params.iG_car_low = single(iG_car_low);
+gear_calc_params.r_dyn = single(r_dyn);
+gear_calc_params.i_diff = single(iD_car);
+
+%% Stateflow Chart Parameters
+state_machine_params.v_ref_min = single(20.0);
+state_machine_params.v_ref_max = single(160.0);
+state_machine_params.v_lim_calc_up_kmh = single(v_lim_calc_up_kmh);
+state_machine_params.v_lim_calc_low_kmh = single(v_lim_calc_low_kmh);
+state_machine_params.v_ref_offset = single(4.0); % currently not implemented
+state_machine_params.n_Mot_min_1pmin = single(n_Mot_min_1pmin);
+% state_machine_params.n_Mot_idle_1pmin = single(1100.0);
+
+%% Signal Selector Parameters
+phi3_ref_idle = single(0.05);
+
+%% Throttle Valve Calibration Parameters
+valve_calib.Ts        = single(0.001);
+valve_calib.tolerance = single(0.05);
+valve_calib.phi_min   = single( 6980*[(1-valve_calib.tolerance) 1.0 (1+valve_calib.tolerance)]);
+valve_calib.phi_nop   = single(10429*[(1-valve_calib.tolerance) 1.0 (1+valve_calib.tolerance)]);
+valve_calib.phi_max   = single(57866*[(1-valve_calib.tolerance) 1.0 (1+valve_calib.tolerance)]);

@@ -2,8 +2,6 @@ main_STM32_H743_HIL_data.o: \
  D:/git/e21_vehicle_control/MatlabSimulink/main_STM32_H743_HIL_ert_rtw/instrumented/main_STM32_H743_HIL_data.c \
  D:/git/e21_vehicle_control/MatlabSimulink/main_STM32_H743_HIL_ert_rtw/instrumented/main_STM32_H743_HIL.h \
  D:/git/e21_vehicle_control/MatlabSimulink/slprj/ert/_sharedutils/rtwtypes.h \
- C:/Program\ Files/MATLAB/R2023b/simulink/include/rtw_extmode.h \
- C:/Program\ Files/MATLAB/R2023b/simulink/include/sysran_types.h \
  D:/git/e21_vehicle_control/MatlabSimulink/main_STM32_H743_HIL_ert_rtw/instrumented/code_profiling_utility_functions.h \
  C:/ProgramData/MATLAB/SupportPackages/R2023b/toolbox/shared/supportpackages/stm32/include/xcp_platform_custom.h \
  C:/Program\ Files/MATLAB/R2023b/toolbox/target/shared/armcortexmbase/xcp/include/sys_arch.h \
@@ -81,8 +79,6 @@ main_STM32_H743_HIL_data.o: \
  D:/git/e21_vehicle_control/MatlabSimulink/main_STM32_H743_HIL_ert_rtw/instrumented/MW_target_hardware_resources.h
 D:/git/e21_vehicle_control/MatlabSimulink/main_STM32_H743_HIL_ert_rtw/instrumented/main_STM32_H743_HIL.h:
 D:/git/e21_vehicle_control/MatlabSimulink/slprj/ert/_sharedutils/rtwtypes.h:
-C:/Program\ Files/MATLAB/R2023b/simulink/include/rtw_extmode.h:
-C:/Program\ Files/MATLAB/R2023b/simulink/include/sysran_types.h:
 D:/git/e21_vehicle_control/MatlabSimulink/main_STM32_H743_HIL_ert_rtw/instrumented/code_profiling_utility_functions.h:
 C:/ProgramData/MATLAB/SupportPackages/R2023b/toolbox/shared/supportpackages/stm32/include/xcp_platform_custom.h:
 C:/Program\ Files/MATLAB/R2023b/toolbox/target/shared/armcortexmbase/xcp/include/sys_arch.h:

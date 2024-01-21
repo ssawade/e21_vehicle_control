@@ -52,11 +52,7 @@ code_profiling_utility_functions.o: code_profiling_utility_functions.c \
  D:/git/e21_vehicle_control/MatlabSimulink/STM32_CubeMX_ECU_H743/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usart.h \
  D:/git/e21_vehicle_control/MatlabSimulink/STM32_CubeMX_ECU_H743/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_gpio.h \
  C:/ProgramData/MATLAB/SupportPackages/R2023b/toolbox/shared/supportpackages/stm32/include/mw_stm32_types.h \
- D:/git/e21_vehicle_control/MatlabSimulink/slprj/ert/_sharedutils/rtwtypes.h \
- ext_mode_profiling.h \
- C:/Program\ Files/MATLAB/R2023b/toolbox/coder/xcp/src/target/server/include/xcp.h \
- C:/Program\ Files/MATLAB/R2023b/toolbox/coder/xcp/src/target/server/common/xcp_common.h \
- C:/Program\ Files/MATLAB/R2023b/toolbox/coder/xcp/src/target/server/platform/include/xcp_platform.h
+ D:/git/e21_vehicle_control/MatlabSimulink/slprj/ert/_sharedutils/rtwtypes.h
 code_profiling_utility_functions.h:
 C:/ProgramData/MATLAB/SupportPackages/R2023b/toolbox/shared/supportpackages/stm32/include/xcp_platform_custom.h:
 C:/Program\ Files/MATLAB/R2023b/toolbox/target/shared/armcortexmbase/xcp/include/sys_arch.h:
@@ -111,7 +107,3 @@ D:/git/e21_vehicle_control/MatlabSimulink/STM32_CubeMX_ECU_H743/Drivers/STM32H7x
 D:/git/e21_vehicle_control/MatlabSimulink/STM32_CubeMX_ECU_H743/Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_gpio.h:
 C:/ProgramData/MATLAB/SupportPackages/R2023b/toolbox/shared/supportpackages/stm32/include/mw_stm32_types.h:
 D:/git/e21_vehicle_control/MatlabSimulink/slprj/ert/_sharedutils/rtwtypes.h:
-ext_mode_profiling.h:
-C:/Program\ Files/MATLAB/R2023b/toolbox/coder/xcp/src/target/server/include/xcp.h:
-C:/Program\ Files/MATLAB/R2023b/toolbox/coder/xcp/src/target/server/common/xcp_common.h:
-C:/Program\ Files/MATLAB/R2023b/toolbox/coder/xcp/src/target/server/platform/include/xcp_platform.h:

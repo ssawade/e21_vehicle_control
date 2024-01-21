@@ -9,7 +9,7 @@
  *
  * Model version                  : 2.9
  * Simulink Coder version         : 23.2 (R2023b) 01-Aug-2023
- * C/C++ source code generated on : Sat Jan  6 21:34:02 2024
+ * C/C++ source code generated on : Mon Jan 15 20:57:32 2024
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -17,12 +17,49 @@
  * Validation result: Not run
  */
 
+#include <stddef.h>
+#include "code_profiling_utility_functions.h"
 #include "main_STM32_H743_HIL.h"
 #include "rtwtypes.h"
-#include "xcp.h"
-#include "ext_mode.h"
 #include "MW_target_hardware_resources.h"
-#include "ext_mode_profiling.h"
+
+unsigned int profilingDataIdx = 0;
+unsigned long int _tmwrunningCoreID;
+struct _profilingData
+{
+  unsigned long int sectionID[400];
+  unsigned long int timerValue[400];
+  unsigned long int coreID[400];
+} profilingData;
+
+void store_code_profiling_data_point(void * pData, uint32_T numMemUnits,
+  uint32_T sectionId)
+{
+  uint32_T * pTimerValue = (uint32_T *) pData;
+  size_t elNum = 0;
+  size_t numEls = numMemUnits/sizeof(uint32_T);
+  if (profilingDataIdx==400) {
+    return;
+  }
+
+  for (elNum=0; elNum<numEls; ++elNum) {
+    profilingData.sectionID[profilingDataIdx] = sectionId;
+    profilingData.timerValue[profilingDataIdx] = pTimerValue[elNum];
+    profilingData.coreID[profilingDataIdx] = _tmwrunningCoreID;
+    profilingDataIdx++;
+  }
+}
+
+void code_profiling_atomic_read_store(uint32_T sectionId)
+{
+  __disable_irq();
+
+  /* Using a timer that increments on each tick. */
+  uint32_T timerValue = (uint32_T)profileTimerRead();
+  store_code_profiling_data_point((void *)(&timerValue), (uint32_T)(sizeof
+    (uint32_T)), sectionId);
+  __enable_irq();
+}
 
 volatile int IsrOverrun = 0;
 boolean_T isRateRunning[5] = { 0, 0, 0, 0, 0 };
@@ -31,7 +68,6 @@ boolean_T need2runFlags[5] = { 0, 0, 0, 0, 0 };
 
 void rt_OneStep(void)
 {
-  extmodeSimulationTime_T currentTime = (extmodeSimulationTime_T) 0;
   boolean_T eventFlags[5];
   int_T i;
 
@@ -49,16 +85,11 @@ void rt_OneStep(void)
    */
   main_STM32_H743_HIL_SetEventsForThisBaseStep(eventFlags);
   __enable_irq();
-  currentTime = (extmodeSimulationTime_T)
-    main_STM32_H743_HIL_M->Timing.taskTime0;
   taskTimeStart_main_STM32_H743_HIL(2U);
   main_STM32_H743_HIL_step0();
   taskTimeEnd_main_STM32_H743_HIL(2U);
 
   /* Get model outputs here */
-
-  /* Trigger External Mode event */
-  extmodeEvent(0, currentTime);
   __disable_irq();
   isRateRunning[0]--;
   for (i = 1; i < 5; i++) {
@@ -85,55 +116,35 @@ void rt_OneStep(void)
       switch (i)
       {
        case 1 :
-        currentTime = (extmodeSimulationTime_T)
-          ((main_STM32_H743_HIL_M->Timing.clockTick1) * 0.005);
         taskTimeStart_main_STM32_H743_HIL(3U);
         main_STM32_H743_HIL_step1();
         taskTimeEnd_main_STM32_H743_HIL(3U);
 
         /* Get model outputs here */
-
-        /* Trigger External Mode event */
-        extmodeEvent(1, currentTime);
         break;
 
        case 2 :
-        currentTime = (extmodeSimulationTime_T)
-          ((main_STM32_H743_HIL_M->Timing.clockTick2) * 0.01);
         taskTimeStart_main_STM32_H743_HIL(4U);
         main_STM32_H743_HIL_step2();
         taskTimeEnd_main_STM32_H743_HIL(4U);
 
         /* Get model outputs here */
-
-        /* Trigger External Mode event */
-        extmodeEvent(2, currentTime);
         break;
 
        case 3 :
-        currentTime = (extmodeSimulationTime_T)
-          ((main_STM32_H743_HIL_M->Timing.clockTick3) * 0.05);
         taskTimeStart_main_STM32_H743_HIL(5U);
         main_STM32_H743_HIL_step3();
         taskTimeEnd_main_STM32_H743_HIL(5U);
 
         /* Get model outputs here */
-
-        /* Trigger External Mode event */
-        extmodeEvent(3, currentTime);
         break;
 
        case 4 :
-        currentTime = (extmodeSimulationTime_T)
-          ((main_STM32_H743_HIL_M->Timing.clockTick4) * 0.1);
         taskTimeStart_main_STM32_H743_HIL(6U);
         main_STM32_H743_HIL_step4();
         taskTimeEnd_main_STM32_H743_HIL(6U);
 
         /* Get model outputs here */
-
-        /* Trigger External Mode event */
-        extmodeEvent(4, currentTime);
         break;
 
        default :
@@ -153,7 +164,6 @@ int main(int argc, char **argv)
 {
   float modelBaseRate = 0.001;
   float systemClock = 480.0;
-  extmodeErrorCode_T errorCode = EXTMODE_SUCCESS;
 
   /* Initialize variables */
   stopRequested = false;
@@ -186,54 +196,17 @@ int main(int argc, char **argv)
   MX_TIM15_Init();
   MX_USART2_UART_Init();
   rtmSetErrorStatus(main_STM32_H743_HIL_M, 0);
-
-  /* Parse External Mode command line arguments */
-  errorCode = extmodeParseArgs(0, NULL);
-  if (errorCode != EXTMODE_SUCCESS) {
-    return (errorCode);
-  }
-
   main_STM32_H743_HIL_configure_interrupts();
-  extmodeInitProfiling();
   taskTimeStart_main_STM32_H743_HIL(1U);
   main_STM32_H743_HIL_initialize();
   taskTimeEnd_main_STM32_H743_HIL(1U);
   __disable_irq();
-  __enable_irq();
-
-  /* External Mode initialization */
-  errorCode = extmodeInit(main_STM32_H743_HIL_M->extModeInfo, &rtmGetTFinal
-    (main_STM32_H743_HIL_M));
-  if (errorCode != EXTMODE_SUCCESS) {
-    /* Code to handle External Mode initialization errors
-       may be added here */
-  }
-
-  if (errorCode == EXTMODE_SUCCESS) {
-    /* Wait until a Start or Stop Request has been received from the Host */
-    extmodeWaitForHostRequest(EXTMODE_WAIT_FOREVER);
-    if (extmodeStopRequested()) {
-      rtmSetStopRequested(main_STM32_H743_HIL_M, true);
-    }
-  }
-
-  __disable_irq();
   ARMCM_SysTick_Config(modelBaseRate);
-  runModel = !extmodeSimulationComplete() && !extmodeStopRequested() &&
-    !rtmGetStopRequested(main_STM32_H743_HIL_M);
+  runModel = rtmGetErrorStatus(main_STM32_H743_HIL_M) == (NULL);
   __enable_irq();
   __enable_irq();
   while (runModel) {
-    /* Run External Mode background activities */
-    errorCode = extmodeBackgroundRun();
-    if (errorCode != EXTMODE_SUCCESS) {
-      /* Code to handle External Mode background task errors
-         may be added here */
-    }
-
-    stopRequested = !(!extmodeSimulationComplete() && !extmodeStopRequested() &&
-                      !rtmGetStopRequested(main_STM32_H743_HIL_M));
-    runModel = !(stopRequested);
+    stopRequested = !(rtmGetErrorStatus(main_STM32_H743_HIL_M) == (NULL));
     if (stopRequested) {
       SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
     }
@@ -245,9 +218,6 @@ int main(int argc, char **argv)
   taskTimeStart_main_STM32_H743_HIL(7U);
   main_STM32_H743_HIL_terminate();
   taskTimeEnd_main_STM32_H743_HIL(7U);
-
-  /* External Mode reset */
-  extmodeReset();
 
 #if !defined(MW_FREERTOS) && !defined(USE_RTX)
 
